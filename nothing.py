@@ -1,0 +1,1 @@
+# Dummy file required for configuration by django 1.2

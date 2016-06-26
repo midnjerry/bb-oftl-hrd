@@ -1,0 +1,38 @@
+<script type="text/javascript">
+$(function() {
+  analytics();
+  $('a[rel="coach"]').colorbox({
+    current: "",
+    href: function() { return $(this).attr('href').replace("#", ""); },
+    scrolling: false
+  });
+  $('a[rel="team"]').colorbox({
+    current: "",
+    href: function() { return $(this).attr('href').replace("#", ""); },
+    scrolling: false
+  });
+  $('.tablesorter').tablesorter();
+});
+</script>
+
+
+<div class="h2">
+<h2>Standings per Race</h2>
+</div>
+{% with tables.active as table %}
+{% include "table.html" %}
+{% endwith %}
+
+<div class="h2">
+<h2>Average Match Statistics per Race</h2>
+</div>
+{% with tables.average as table %}
+{% include "table.html" %}
+{% endwith %}
+
+<div class="h2">
+<h2>Total Match Statistics per Race</h2>
+</div>
+{% with tables.stats as table %}
+{% include "table.html" %}
+{% endwith %}

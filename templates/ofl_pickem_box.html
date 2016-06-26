@@ -1,0 +1,163 @@
+<script type="text/javascript">
+  analytics();
+
+$(function() {
+
+var form_options = {
+    beforeSerialize: function() {
+      open_working();
+    },
+    success: function() {
+      $('#tabs').tabs('load', 8);
+	  $.fn.colorbox.close();
+      return false;
+    }
+  };
+
+  $('.ajax_form').ajaxForm(form_options);
+
+  $('span.create_coachname').live('click', function() {
+    $('#tabs').tabs('select', 7);
+    $.fn.colorbox.close();
+    return false;
+  });
+
+  $('span.get_schedule').live('click', function() {
+    var key =$(this).attr('id').split("_")[1];
+	var s = key.split("-")[0];
+    var w = key.split("-")[1];
+    $.post('get_schedule', {
+              season: s,
+              week: w
+            }, function () {
+            });
+    
+	$(this).die()
+	return false;
+  });  
+  
+  $('span.get_schedule1').click(function() {
+	var key =$(this).attr('id').split("_")[1];
+    alert('Alert: ' + key);
+	var season = key.split("-")[0];
+    var week = key.split("-")[1];
+    alert('Alert ' + key + " " + season + "-" + week);
+    });
+  
+/* Purposefully turn off sorter.
+  $('.schedule_table').tablesorter({
+    sortList: [[0,1]]
+  });
+*/
+
+  function ReorganizeValues(oldpositions, newpositions)
+  {
+    var originalValues = [];
+    for (var i=0; i<oldpositions.length; i++) {
+      originalValues.push($("input."+oldpositions[i]).val())
+      
+    }
+
+    for (var i=0; i<oldpositions.length; i++) {    
+      var new_class = newpositions[i]
+      $("input."+new_class).val(originalValues[i])
+      $("td."+new_class).text(originalValues[i])
+    }
+    
+  }
+  
+  $( "#sortable" ).sortable({
+    start: function(event, ui) {
+	  //Get old position order
+	  $(this).data("old_position",$(this).sortable("toArray", {attribute: 'class'}))
+	  //console.log($(this).data("old_position"))
+    },
+	update: function(event, ui) {
+      //Get new position order
+	  $(this).data("new_position",$(this).sortable("toArray", {attribute: 'class'}))
+	  //console.log($(this).data("new_position"))
+      //var fruitOrder = $(this).sortable('toArray', {attribute: 'class'}).toString();
+      //console.log("fruitOrder: " + fruitOrder)
+      //console.log(fruitOrder[0])
+      //var selected_row=ui.item
+      //var row_class = selected_row.attr('class')
+      //console.log ("Class = " + row_class) 
+      //var currentIndex = ui.placeholder.index();
+      //$("."+row_class).attr('value', currentIndex)
+      ReorganizeValues($(this).data("old_position"), $(this).data("new_position"))
+      },
+    change: function (event, ui) {
+	  //console.log("change")
+      //var originIndex = ui.item.data('originIndex');
+      //var currentIndex = ui.placeholder.index();
+                       
+      //if (currentIndex > originIndex)
+      //{
+        //currentIndex -= 1;
+      //}
+                       
+      //$("#hoveringOver").text("Current Index: " + currentIndex);
+      //var selected_row = ui.item;  
+      //console.log(selected_row.children()[0].textContent);
+      //var point_value = 20-currentIndex;
+      //selected_row.children()[0].textContent = point_value;
+    },
+    stop: function (event, ui) {
+	  //console.log("stop") 
+      //$("#draggingFrom, #hoveringOver").text("None");
+
+    }
+  });
+  
+  $('a[rel="schedule"]').colorbox({
+    current: "",
+    href: function() { return $(this).attr('href').replace("#", ""); },
+    scrolling: false
+  });
+  
+  
+  
+});
+
+</script>
+
+<div class="box match_box">
+{% if not user %}
+<p>
+This is OFL 'Pickem!  Predict which teams in the OFL will win, lose, or draw!  Beat your fellow coaches for the ultimate bragging rights.
+</p>
+<p>
+Please <a href="{{ log_in_url }}">log in</a>.
+</p>
+{% else %}
+  {% if not coach %}
+  <p>
+    This is OFL 'Pickem!  Predict which teams in the OFL will win, lose, or draw!  Beat your fellow coaches for the ultimate bragging rights.
+  </p>
+  <p>
+    Please <span class='link create_coachname'>create your profile</span> to start playing.
+  </p>
+
+  {% else %}
+  
+  <div class="h2">
+    <h2>Season {{ season }} Week {{ week }} Schedule</h2>
+  </div>
+  <div>
+  <form class="ajax_form" action="/save_predictions" method="post">
+  <input type="hidden" name="count" value="{{prediction_list.count}}">
+  {{ table_html|safe }}
+  <input type="submit" value="Save Predictions"/>
+  </form>
+  </div>
+  
+  {% endif %}
+{% endif %}
+
+<div class="h2">
+<h2>Games Played</h2>
+</div>
+{% with played_table as table %}
+{% include "table.html" %}
+{% endwith %}
+</div>
