@@ -32,11 +32,11 @@ Leader board for the top 50 teams with most matches played.  Bragging rights for
 All league statistics organized by Race.  Have fun!
 
 ######Tournaments
-Join a Tournament or browse through previous winners.
+Join a Tournament or browse through previous winners.  Tournaments can be created for 4 to 64 players.  You can limit participants by TV (tournament value), number of matches played, or by Race.  Teams can be seeded by: Adjusted Win Percentage (AWP), Rating , TV or custom ordering.  Upload a pic of the trophy and write some great fluff to hype the Tournament up!
 
 ######Coach's Page
 Manage / customize your teams, create tournaments, claim a new team.
 
 ######OFL Pick'Em
-Put your money where your mouth is!  Bet on weekly matches held at the OFL.  (www.oldworldfootball.com)
+Put your money where your mouth is!  Bet on weekly matches held at the OFL.  (www.oldworldfootball.com)  Make a prediction and bet more or less by dragging each match higher or lower.  When you're done selecting, submit your choices.  Compete to become the next Oracle of the Pitch!
 
